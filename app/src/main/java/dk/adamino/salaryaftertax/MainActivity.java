@@ -10,10 +10,7 @@ import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mSalary;
-    private TextView mDeduction;
-    private TextView mTax;
-    private TextView mSalaryAfterTax;
+    private TextView mSalary, mDeduction, mTax, mSalaryAfterTax;
     private Button mCalculate;
 
     private double salary = 0;
@@ -26,11 +23,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSalary = (TextView) findViewById(R.id.salary);
-        mDeduction = (TextView) findViewById(R.id.deduction);
-        mTax = (TextView) findViewById(R.id.tax);
-        mSalaryAfterTax = (TextView) findViewById(R.id.lblSalaryAfterTa);
-        mCalculate = (Button) findViewById(R.id.calculate);
+        mSalary = findViewById(R.id.salary);
+        mDeduction = findViewById(R.id.deduction);
+        mTax = findViewById(R.id.tax);
+        mSalaryAfterTax = findViewById(R.id.lblSalaryAfterTa);
+        mCalculate = findViewById(R.id.calculate);
 
         View.OnClickListener calculateListener = new View.OnClickListener() {
             @Override
@@ -40,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                     deduction = Double.parseDouble(mDeduction.getText().toString());
                     tax = Double.parseDouble(mTax.getText().toString());
                 } catch (NumberFormatException nfe) {
-                    System.out.println("Bad format " + nfe.getMessage().toString());
+                    System.out.println("Bad format " + nfe.getMessage());
                 }
 
 
@@ -54,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
                 salaryAfterTax = salaryMinusTax + deduction;
 
-                DecimalFormat formatter = new DecimalFormat("#,###.00");
+                DecimalFormat formatter = new DecimalFormat("#,###.##");
 
                 String salaryAfterTaxAsString = formatter.format(salaryAfterTax);
 
