@@ -23,7 +23,7 @@ public class SalaryAfterTaxCalculatorShould {
     }
 
     @Test
-    public void calculateSalaryAfterTax() {
+    public void calculateSalaryAfterTax_withValidInput() {
         double salaryBeforeTax = 28_000;
         double personalDeduction = 3_900;
         double municipalityTaxPercentage = 39;
@@ -34,7 +34,26 @@ public class SalaryAfterTaxCalculatorShould {
         double expectedSalaryAfterTax = (salaryWithPersonalDeductionDeducted * convertedMunicipalityTaxRate) + personalDeduction;
         double result = mSalaryAfterTaxCalculator.calculateSalaryAfterTax(salaryBeforeTax, personalDeduction, municipalityTaxPercentage);
 
-        assertTrue(expectedSalaryAfterTax == 17234.6);
+        assertTrue(expectedSalaryAfterTax == 17_234.6);
+        assertEquals(expectedSalaryAfterTax, result, 0);
+    }
+    @Test
+    public void calculateSalaryAfterTax_returnAtMostSalaryWithAMBIDeducted() {
+        double salaryBeforeTax = 28_000;
+        double personalDeduction = 60_000;
+        double municipalityTaxPercentage = 39;
+
+        double convertedMunicipalityTaxRate = (100 - municipalityTaxPercentage) / 100;
+        double salaryWithAMBIDeducted = salaryBeforeTax * AMBI_DEDUCTION_RATE;
+        // Personal deduction can never be above salaryWithAMBIDeducted
+        if (personalDeduction > salaryWithAMBIDeducted) {
+            personalDeduction = salaryWithAMBIDeducted;
+        }
+        double salaryWithPersonalDeductionDeducted = salaryWithAMBIDeducted - personalDeduction;
+        double expectedSalaryAfterTax = (salaryWithPersonalDeductionDeducted * convertedMunicipalityTaxRate) + personalDeduction;
+        double result = mSalaryAfterTaxCalculator.calculateSalaryAfterTax(salaryBeforeTax, personalDeduction, municipalityTaxPercentage);
+
+        assertTrue("Salary should match", expectedSalaryAfterTax == 25_760);
         assertEquals(expectedSalaryAfterTax, result, 0);
     }
 }

@@ -11,6 +11,11 @@ public class SalaryAfterTaxCalculator implements ISalaryAfterTaxCalculator {
         double municipalityTaxRate = (100 - municipalityTaxPercentage) / 100;
 
         double salaryWithAMBIDeducted = salaryBeforeTax * AMBI_DEDUCTION_RATE;
+
+        // Ensure that personal deduction is never more than salaryWithAMBIDeducted
+        if (personalDeduction > salaryWithAMBIDeducted) {
+            personalDeduction = salaryWithAMBIDeducted;
+        }
         double salaryWithPersonalDeductionDeducted = salaryWithAMBIDeducted - personalDeduction;
         return (salaryWithPersonalDeductionDeducted * municipalityTaxRate) + personalDeduction;
     }

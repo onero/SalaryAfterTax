@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SalaryAfterTax</string>
+    <string name="app_name">Salary After Tax</string>
     <string name="salary_hint">Løn før skat</string>
     <string name="deduction">Fradrag</string>
     <string name="tax">Trækprocent</string>

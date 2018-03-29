@@ -21,17 +21,16 @@
         android:layout_centerHorizontal="true"/>
 
     <EditText
+        android:id="@+id/salary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="66dp"
         android:ems="10"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="48dp"
-        android:layout_marginTop="19dp"
-        android:id="@+id/salary"
-        android:textAlignment="center"
-        android:hint="@string/salary_hint"/>
+        android:hint="@string/salary_hint"
+        android:inputType="number"
+        android:textAlignment="center"/>
 
     <TextView
         android:text="@string/deduction"
@@ -86,14 +85,15 @@
         />
 
     <Button
-        android:text="@string/calculate"
+        android:id="@+id/calculate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#51b46d"
         android:layout_alignParentBottom="true"
-        android:id="@+id/calculate"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:background="#51b46d"
+        android:text="@string/calculate"
+        android:textColor="@android:color/background_light"/>
 
     <TextView
         android:text="@string/salaryAfterTax"
