@@ -37,6 +37,47 @@ public class SalaryAfterTaxCalculatorShould {
         assertTrue(expectedSalaryAfterTax == 17_234.6);
         assertEquals(expectedSalaryAfterTax, result, 0);
     }
+
+    @Test
+    public void calculateSalaryAfterTax_zeroSalaryReturnsZeroAfterTax() {
+        double salaryBeforeTax = 0;
+        double personalDeduction = 3_900;
+        double municipalityTaxPercentage = 39;
+
+        double convertedMunicipalityTaxRate = (100 - municipalityTaxPercentage) / 100;
+        double salaryWithAMBIDeducted = salaryBeforeTax * AMBI_DEDUCTION_RATE;
+        // Personal deduction should never be more than salary
+        if (personalDeduction > salaryBeforeTax) {
+            personalDeduction = salaryBeforeTax;
+        }
+        double salaryWithPersonalDeductionDeducted = salaryWithAMBIDeducted - personalDeduction;
+        double expectedSalaryAfterTax = (salaryWithPersonalDeductionDeducted * convertedMunicipalityTaxRate) + personalDeduction;
+        double result = mSalaryAfterTaxCalculator.calculateSalaryAfterTax(salaryBeforeTax, personalDeduction, municipalityTaxPercentage);
+
+        assertTrue(expectedSalaryAfterTax == 0);
+        assertEquals(expectedSalaryAfterTax, result, 0);
+    }
+
+    @Test
+    public void calculateSalaryAfterTax_returnSalaryWithAMBIDeducted_whenSalaryUnderDeductionAndAboveZero() {
+        double salaryBeforeTax = 3000;
+        double personalDeduction = 3_900;
+        double municipalityTaxPercentage = 39;
+
+        double convertedMunicipalityTaxRate = (100 - municipalityTaxPercentage) / 100;
+        double salaryWithAMBIDeducted = salaryBeforeTax * AMBI_DEDUCTION_RATE;
+        // Personal deduction should never be more than salaryWithAMBIDeducted
+        if (personalDeduction > salaryWithAMBIDeducted) {
+            personalDeduction = salaryWithAMBIDeducted;
+        }
+        double salaryWithPersonalDeductionDeducted = salaryWithAMBIDeducted - personalDeduction;
+        double expectedSalaryAfterTax = (salaryWithPersonalDeductionDeducted * convertedMunicipalityTaxRate) + personalDeduction;
+        double result = mSalaryAfterTaxCalculator.calculateSalaryAfterTax(salaryBeforeTax, personalDeduction, municipalityTaxPercentage);
+
+        assertTrue(expectedSalaryAfterTax == salaryWithAMBIDeducted);
+        assertEquals(expectedSalaryAfterTax, result, 0);
+    }
+
     @Test
     public void calculateSalaryAfterTax_returnAtMostSalaryWithAMBIDeducted() {
         double salaryBeforeTax = 28_000;

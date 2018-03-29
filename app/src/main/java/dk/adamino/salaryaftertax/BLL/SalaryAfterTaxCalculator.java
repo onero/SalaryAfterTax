@@ -15,7 +15,10 @@ public class SalaryAfterTaxCalculator implements ISalaryAfterTaxCalculator {
         // Ensure that personal deduction is never more than salaryWithAMBIDeducted
         if (personalDeduction > salaryWithAMBIDeducted) {
             personalDeduction = salaryWithAMBIDeducted;
-        }
+        } else // Personal deduction should never be more than salary
+            if (personalDeduction > salaryBeforeTax) {
+                personalDeduction = salaryBeforeTax;
+            }
         double salaryWithPersonalDeductionDeducted = salaryWithAMBIDeducted - personalDeduction;
         return (salaryWithPersonalDeductionDeducted * municipalityTaxRate) + personalDeduction;
     }
