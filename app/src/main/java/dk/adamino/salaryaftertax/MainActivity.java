@@ -8,56 +8,50 @@ import android.widget.TextView;
 
 import java.text.DecimalFormat;
 
+import dk.adamino.salaryaftertax.BLL.ISalaryAfterTaxCalculator;
+import dk.adamino.salaryaftertax.BLL.SalaryAfterTaxCalculator;
+
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mSalary, mDeduction, mTax, mSalaryAfterTax;
-    private Button mCalculate;
+    private static final DecimalFormat SALARY_FORMATTER = new DecimalFormat("#,###.##");
 
-    private double salary = 0;
-    private double deduction = 0;
-    private double tax = 0;
-    private double salaryAfterTax;
+    private TextView txtSalary, txtDeduction, txtTax, txtSalaryAfterTax;
+    private ISalaryAfterTaxCalculator mSalaryAfterTaxCalculator;
+
+    private double mSalary = 0;
+    private double mPersonalDeduction = 0;
+    private double mMunicipalityTax = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSalary = findViewById(R.id.salary);
-        mDeduction = findViewById(R.id.deduction);
-        mTax = findViewById(R.id.tax);
-        mSalaryAfterTax = findViewById(R.id.lblSalaryAfterTa);
-        mCalculate = findViewById(R.id.calculate);
+        txtSalary = findViewById(R.id.salary);
+        txtDeduction = findViewById(R.id.deduction);
+        txtTax = findViewById(R.id.tax);
+        txtSalaryAfterTax = findViewById(R.id.lblSalaryAfterTa);
+        Button calculate = findViewById(R.id.calculate);
+
+        mSalaryAfterTaxCalculator = new SalaryAfterTaxCalculator();
 
         View.OnClickListener calculateListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try  {
-                    salary = Double.parseDouble(mSalary.getText().toString());
-                    deduction = Double.parseDouble(mDeduction.getText().toString());
-                    tax = Double.parseDouble(mTax.getText().toString());
+                    mSalary = Double.parseDouble(txtSalary.getText().toString());
+                    mPersonalDeduction = Double.parseDouble(txtDeduction.getText().toString());
+                    mMunicipalityTax = Double.parseDouble(txtTax.getText().toString());
                 } catch (NumberFormatException nfe) {
                     System.out.println("Bad format " + nfe.getMessage());
                 }
+                double salaryAfterTax = mSalaryAfterTaxCalculator.calculateSalaryAfterTax(mSalary, mPersonalDeduction, mMunicipalityTax);
 
+                String salaryAfterTaxAsString = SALARY_FORMATTER.format(salaryAfterTax);
 
-                double salaryAfterAM = salary * 0.91;
-
-                double salaryAfterDeduction = salaryAfterAM - deduction;
-
-                double taxConvertedToDouble = (100 - tax) / 100;
-
-                double salaryMinusTax = salaryAfterDeduction * taxConvertedToDouble;
-
-                salaryAfterTax = salaryMinusTax + deduction;
-
-                DecimalFormat formatter = new DecimalFormat("#,###.##");
-
-                String salaryAfterTaxAsString = formatter.format(salaryAfterTax);
-
-                mSalaryAfterTax.setText(salaryAfterTaxAsString);
+                txtSalaryAfterTax.setText(salaryAfterTaxAsString);
             }
         };
-        mCalculate.setOnClickListener(calculateListener);
+        calculate.setOnClickListener(calculateListener);
     }
 }
